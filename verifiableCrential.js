@@ -82,34 +82,42 @@ function calculateSignature(privateKeyObject, vc) {
 
 }
 
-
-
-const vcTemplate = {
-    '@context': ['https://w3.org/2018/credentials/v1', 'https://schema.org/Person'],
-    "type": ["VerifiableCredential", "PersonCredential"],
-    "issuer": "",
-    "issuanceDate": (new Date()).toISOString(),
-    "credentialSubject": {
-        "id": createDidDni('40063820'),
-        "givenName": "Edgard",
-        "taxID": "40063820",
-        "telephone": "994001406"
+function getVcTemplate() {
+    let vcTemplate = {
+        '@context': ['https://w3.org/2018/credentials/v1', 'https://schema.org/Person'],
+        "type": ["VerifiableCredential", "PersonCredential"],
+        "issuer": "",
+        "issuanceDate": (new Date()).toISOString(),
+        "credentialSubject": {
+            "id": createDidDni('40063820'),
+            "givenName": "Edgard",
+            "taxID": "40063820",
+            "telephone": "994001406"
+        }
     }
+
+    return vcTemplate;
+}
+
+function getProofTemplate() {
+    let proofTemplate = {
+        //secp256k1
+        "type": "ES256K",
+
+        "created": (new Date()).toISOString(),
+
+        "proofPurpose": "assertionMethod",
+
+        "verificationMethod": "public key",
+
+        "jws": ""
+    }
+
+    return proofTemplate;
 }
 
 
-const proofTemplate = {
-    //secp256k1
-    "type": "ES256K",
 
-    "created": (new Date()).toISOString(),
-
-    "proofPurpose": "assertionMethod",
-
-    "verificationMethod": "public key",
-
-    "jws": ""
-}
 
 
 
@@ -120,7 +128,7 @@ function addSignature(vc, seed) {
 
     vc.issuer = createDidPlubic(pubPoint);
 
-    vc.proof = proofTemplate;
+    vc.proof = getProofTemplate();
     vc.proof.verificationMethod = pubPoint;
     delete vc.proof["jws"]
     let joseSignature = calculateSignature(privateKeyObject, vc);
@@ -165,6 +173,7 @@ function sign(subject, seed) {
     subject.id = createDidDni(subject.taxID);
 
     let seed_hex = Buffer.from(seed, 'utf8').toString('hex');
+    let vcTemplate = getVcTemplate()
     vcTemplate.credentialSubject = subject
     let sign = addSignature(vcTemplate, seed_hex)
 

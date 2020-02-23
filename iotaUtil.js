@@ -3,7 +3,7 @@ const { asciiToTrytes, trytesToAscii } = require('@iota/converter')
 const mode = 'restricted'
 const secretKey = '9ABCDEFGHIJKLMNOPQRSTUVWXYZ'
 const provider = 'https://nodes.devnet.iota.org'
-const seed = "EODUHYWPVPOJREITYLLTHLZZOVHJTSOC9KXZHBJTR9OQHHGMEBFOYLAQDBCFLKWPTHMTEJJQIIGESEVPO"
+const seed = "YKWGWIHOIRYZMHVAZQPYEVLJOYJDRVYLQECIWAOOYDHXJMUKSEOQDFGXEFTBZITXOLSTLMNEZXEXBLQEO"
 
 let mamState = Mam.init(provider, seed)
 mamState = Mam.changeMode(mamState, mode, secretKey)
