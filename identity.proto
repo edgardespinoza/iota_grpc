@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+package iota;
+
+service Identity {
+    rpc getIdentity (IdentityIdOnly) returns (IdentityOnly){}
+
+    rpc insert(IdentityOnly) returns (IdentityOnly){}
+
+    rpc validate (IdentityRoot) returns (IdentityValidate){}
+}
+
+message IdentityIdOnly{
+    string root = 1;
+}
+
+message IdentityRoot{
+    string body = 1;
+    string root = 2;
+}
+
+message IdentityOnly{
+    string body = 1;
+}
+
+message IdentityValidate{
+    bool validate = 1;
+}
