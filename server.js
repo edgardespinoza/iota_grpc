@@ -46,7 +46,7 @@ const getServer = function(service, serviceCall, lintener) {
 }
 
 function main() {
-    const identityServer = getServer(identity.service, new Identity, 'localhost:50051');
+    const identityServer = getServer(identity.service, new Identity, '0.0.0.0:50051');
     identityServer.start();
     console.log("main.star");
 
