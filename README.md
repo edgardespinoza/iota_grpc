@@ -39,7 +39,7 @@ docker
  sudo apt install docker-ce
 
 // 
-sudo docker run --detach --name=iota gcr.io/identitygrpc/endpoints-identity:1.0
+sudo docker run --detach --name=iota gcr.io/identitygrpc/endpoints-identity:2.0
 
 
 sudo docker run \
@@ -54,7 +54,7 @@ sudo docker run \
     --backend=grpc://iota:50051
 
 
-docker build -t gcr.io/identitygrpc/endpoints-identity:1.0 .
-gcloud docker -- push gcr.io/identitygrpc/endpoints-identity:1.0
+docker build -t gcr.io/identitygrpc/endpoints-identity:2.0 .
+gcloud docker -- push gcr.io/identitygrpc/endpoints-identity:2.0
 
 gcloud compute instances list

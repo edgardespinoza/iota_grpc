@@ -2,6 +2,7 @@ const grpc = require('grpc');
 const path = require('path');
 var protoLoader = require('@grpc/proto-loader');
 const PROTO_PATH = path.join(__dirname, './identity.proto');
+const proxy = require('./proxy')
 
 var packageDefinition = protoLoader.loadSync(
     PROTO_PATH, {
@@ -22,18 +23,43 @@ class Identity {
     }
 
     getIdentity(call, callback) {
-        let newIdentity = Object.assign({}, call.request);
 
-        return callback(null, {
-            body: "hola"
+        (async function() {
+            try {
+                let newIdentity = Object.assign({}, call.request)
+                console.log(newIdentity.root)
+                let credential = await proxy.getCredential(newIdentity.root)
+                return callback(null, {
+                    body: credential
+                });
+            } catch (E) {
+                console.log(E)
+                return callback(null, {
+                    body: "Error" + E
+                });
+            }
 
-        });
+        })();
     }
 
     validate(call, callback) {
-        let newIdentity = Object.assign({}, call.request);
+        (async function() {
+            try {
+                let validateVc = Object.assign({}, call.request)
+                console.log(validateVc.body)
+                console.log(validateVc.root)
+                let flag = await proxy.validate(validateVc.body, validateVc.root)
+                return callback(null, {
+                    validate: flag
+                });
+            } catch (E) {
+                console.log(E)
+                return callback(null, {
+                    validate: false
+                });
+            }
 
-        return callback(null, newIdentity);
+        })();
     }
 
 }
